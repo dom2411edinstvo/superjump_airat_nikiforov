@@ -1855,10 +1855,8 @@
             xhr.send();
         })();
 
-        // Preloader — убираем мгновенно
-        document.addEventListener('DOMContentLoaded', function() {
-            document.getElementById('preloader').classList.add('hidden');
-        });
+        // Preloader — убираем сразу
+        document.getElementById('preloader').classList.add('hidden');
 
         // Header scroll
         window.addEventListener('scroll', function() {
