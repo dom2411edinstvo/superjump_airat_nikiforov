@@ -1816,18 +1816,18 @@
         // =====================================================
         // НАСТРОЙКИ TELEGRAM БОТА
         // =====================================================
-        const TELEGRAM_BOT_TOKEN = '8626623892:AAG8zTTZ4HnT77rBml2fzDFyqfqYTifTBkA';
-        const TELEGRAM_CHAT_ID = '752397785';
+        var BOT_TOKEN = '8626623892:AAG8zTTZ4HnT77rBml2fzDFyqfqYTifTBkA';
+        var CHAT_ID = '752397785';
         // =====================================================
 
-        // Preloader — убираем сразу
-        window.addEventListener('DOMContentLoaded', () => {
+        // Preloader — убираем мгновенно
+        document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('preloader').classList.add('hidden');
         });
 
         // Header scroll
-        window.addEventListener('scroll', () => {
-            const header = document.getElementById('header');
+        window.addEventListener('scroll', function() {
+            var header = document.getElementById('header');
             if (window.scrollY > 50) {
                 header.classList.add('scrolled');
             } else {
@@ -1837,85 +1837,90 @@
 
         // Mobile menu
         function toggleMenu() {
-            const menu = document.getElementById('mobileMenu');
-            const btn = document.querySelector('.menu-btn');
+            var menu = document.getElementById('mobileMenu');
+            var btn = document.querySelector('.menu-btn');
             menu.classList.toggle('active');
             btn.classList.toggle('active');
         }
 
         // Certificate Modal
         function openCertModal(imgSrc) {
-            const modal = document.getElementById('certModal');
-            const img = document.getElementById('certModalImg');
+            var modal = document.getElementById('certModal');
+            var img = document.getElementById('certModalImg');
             img.src = imgSrc;
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
 
         function closeCertModal() {
-            const modal = document.getElementById('certModal');
+            var modal = document.getElementById('certModal');
             modal.classList.remove('active');
             document.body.style.overflow = '';
         }
 
-        // Close modal on Escape key
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') {
-                closeCertModal();
-            }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeCertModal();
         });
 
-        // Отправка в Telegram
-        async function sendToTelegram(data) {
-            const now = new Date();
-            const date = now.toLocaleDateString('ru-RU');
-            const time = now.toLocaleTimeString('ru-RU');
-            
-            let message = '\uD83D\uDD14 НОВАЯ ЗАЯВКА с сайта Super Jump!\n\n';
-            message += '\uD83D\uDC64 Имя: ' + data.name + '\n';
-            message += '\uD83D\uDCF1 Телефон: ' + data.phone + '\n';
-            message += '\uD83D\uDCE7 Email: ' + (data.email || 'Не указан') + '\n';
-            message += '\uD83C\uDFD9 Город: ' + (data.city || 'Не указан') + '\n';
-            message += '\uD83D\uDD50 Удобное время: ' + (data.time || 'Не выбрано') + '\n';
-            message += '\uD83D\uDCAC Сообщение: ' + (data.message || 'Нет сообщения') + '\n\n';
-            message += '\uD83D\uDCC5 Дата: ' + date + ', ' + time;
+        // Отправка в Telegram через GET-запрос (самый надёжный способ)
+        function sendToTelegram(data, callback) {
+            var now = new Date();
+            var date = now.toLocaleDateString('ru-RU');
+            var time = now.toLocaleTimeString('ru-RU');
 
-            const url = 'https://api.telegram.org/bot' + TELEGRAM_BOT_TOKEN + '/sendMessage';
-            
-            try {
-                const response = await fetch(url, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        chat_id: TELEGRAM_CHAT_ID,
-                        text: message
-                    })
-                });
+            var text = '';
+            text += '\u{1F514} НОВАЯ ЗАЯВКА с сайта Super Jump!\n\n';
+            text += '\u{1F464} Имя: ' + data.name + '\n';
+            text += '\u{1F4F1} Телефон: ' + data.phone + '\n';
+            text += '\u{1F4E7} Email: ' + (data.email || 'Не указан') + '\n';
+            text += '\u{1F3D9} Город: ' + (data.city || 'Не указан') + '\n';
+            text += '\u{1F550} Удобное время: ' + (data.time || 'Не выбрано') + '\n';
+            text += '\u{1F4AC} Сообщение: ' + (data.message || 'Нет сообщения') + '\n\n';
+            text += '\u{1F4C5} Дата: ' + date + ', ' + time;
 
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Telegram API error:', errorData);
-                    return false;
+            var url = 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage'
+                + '?chat_id=' + encodeURIComponent(CHAT_ID)
+                + '&text=' + encodeURIComponent(text);
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+            xhr.timeout = 10000;
+
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    callback(true, null);
+                } else {
+                    var errMsg = 'HTTP ' + xhr.status;
+                    try {
+                        var resp = JSON.parse(xhr.responseText);
+                        errMsg = resp.description || errMsg;
+                    } catch(e) {}
+                    console.error('Telegram error:', xhr.responseText);
+                    callback(false, errMsg);
                 }
+            };
 
-                return true;
-            } catch (err) {
-                console.error('Fetch error:', err);
-                return false;
-            }
+            xhr.onerror = function() {
+                console.error('Network error');
+                callback(false, 'Нет соединения с интернетом');
+            };
+
+            xhr.ontimeout = function() {
+                console.error('Timeout');
+                callback(false, 'Превышено время ожидания');
+            };
+
+            xhr.send();
         }
 
         // Form submit
-        async function submitForm(e) {
+        function submitForm(e) {
             e.preventDefault();
-            
-            const submitBtn = document.getElementById('submitBtn');
-            const originalText = submitBtn.textContent;
-            
-            // Собираем данные формы
-            const data = {
+
+            var submitBtn = document.getElementById('submitBtn');
+            var originalText = submitBtn.textContent;
+
+            var data = {
                 name: document.getElementById('nameInput').value.trim(),
                 phone: document.getElementById('phoneInput').value.trim(),
                 email: document.getElementById('emailInput').value.trim(),
@@ -1924,87 +1929,74 @@
                 message: document.getElementById('messageInput').value.trim()
             };
 
-            // Проверяем заполнены ли обязательные поля
             if (!data.name || data.phone.length < 6) {
                 showToast('Заполните имя и телефон', 'error');
                 return;
             }
 
-            // Блокируем кнопку
             submitBtn.disabled = true;
             submitBtn.textContent = 'ОТПРАВКА...';
 
-            try {
-                // Отправляем в Telegram
-                const success = await sendToTelegram(data);
-                
+            sendToTelegram(data, function(success, errorMsg) {
                 if (success) {
                     showToast('Заявка отправлена! Айрат свяжется с вами в ближайшее время.', 'success');
                     document.getElementById('contactForm').reset();
                     document.getElementById('phoneInput').value = '+7 ';
                 } else {
-                    showToast('Ошибка отправки. Позвоните по телефону.', 'error');
+                    showToast('Ошибка: ' + (errorMsg || 'Неизвестная ошибка') + '. Позвоните по телефону.', 'error');
                 }
-            } catch (error) {
-                console.error('Ошибка:', error);
-                showToast('Ошибка отправки. Позвоните по телефону.', 'error');
-            }
-
-            // Разблокируем кнопку
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            });
         }
 
         // Toast
         function showToast(msg, type) {
-            const toast = document.getElementById('toast');
+            var toast = document.getElementById('toast');
             toast.textContent = msg;
             toast.className = 'toast ' + (type || 'success');
             toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 4000);
+            setTimeout(function() { toast.classList.remove('show'); }, 5000);
         }
 
         // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(a => {
-            a.addEventListener('click', e => {
+        document.querySelectorAll('a[href^="#"]').forEach(function(a) {
+            a.addEventListener('click', function(e) {
                 e.preventDefault();
-                const target = document.querySelector(a.getAttribute('href'));
+                var target = document.querySelector(a.getAttribute('href'));
                 if (target) {
                     target.scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });
 
-        // Только буквы для имени (кириллица, латиница, пробелы, дефисы)
-        const nameInput = document.getElementById('nameInput');
-        nameInput.addEventListener('input', function(e) {
+        // Только буквы для имени
+        var nameInput = document.getElementById('nameInput');
+        nameInput.addEventListener('input', function() {
             this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ\s\-]/g, '');
         });
 
-        // Только буквы для города (кириллица, латиница, пробелы, дефисы)
-        const cityInput = document.getElementById('cityInput');
-        cityInput.addEventListener('input', function(e) {
+        // Только буквы для города
+        var cityInput = document.getElementById('cityInput');
+        cityInput.addEventListener('input', function() {
             this.value = this.value.replace(/[^a-zA-Zа-яА-ЯёЁ\s\-]/g, '');
         });
 
-        // Phone mask - +7 fixed, max 10 digits
-        const phoneInput = document.getElementById('phoneInput');
-        
+        // Phone mask
+        var phoneInput = document.getElementById('phoneInput');
+
         phoneInput.addEventListener('input', function(e) {
-            let value = e.target.value.replace(/\D/g, ''); // только цифры
-            
-            // Убираем 7 или 8 в начале если есть
+            var value = e.target.value.replace(/\D/g, '');
+
             if (value.startsWith('7')) {
                 value = value.substring(1);
             } else if (value.startsWith('8')) {
                 value = value.substring(1);
             }
-            
-            // Ограничиваем 10 цифрами
+
             value = value.substring(0, 10);
-            
-            // Форматируем
-            let formatted = '+7 ';
+
+            var formatted = '+7 ';
             if (value.length > 0) {
                 formatted += '(' + value.substring(0, 3);
             }
@@ -2017,27 +2009,25 @@
             if (value.length >= 8) {
                 formatted += '-' + value.substring(8, 10);
             }
-            
+
             e.target.value = formatted;
         });
-        
+
         phoneInput.addEventListener('keydown', function(e) {
-            // Запрещаем удаление +7
             if (e.target.selectionStart <= 3 && (e.key === 'Backspace' || e.key === 'Delete')) {
                 e.preventDefault();
             }
         });
-        
+
         phoneInput.addEventListener('focus', function(e) {
             if (e.target.value === '' || e.target.value === '+7') {
                 e.target.value = '+7 ';
             }
-            // Ставим курсор в конец
-            setTimeout(() => {
+            setTimeout(function() {
                 e.target.selectionStart = e.target.selectionEnd = e.target.value.length;
             }, 0);
         });
-        
+
         phoneInput.addEventListener('click', function(e) {
             if (e.target.selectionStart < 3) {
                 e.target.selectionStart = e.target.selectionEnd = e.target.value.length;
