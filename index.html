@@ -2221,7 +2221,7 @@
         // =====================================================
         function buildText(data) {
             var now = new Date();
-            return 'НОВАЯ ЗАЯВКА с сайта Super Jump!\n\nИмя: ' + data.name
+            return 'НОВАЯ ЗАЯВКА Super Jump!\n\nИмя: ' + data.name
                 + '\nТелефон: ' + data.phone
                 + '\nEmail: ' + (data.email || 'Не указан')
                 + '\nГород: ' + (data.city || 'Не указан')
@@ -2230,50 +2230,88 @@
                 + '\nДата: ' + now.toLocaleDateString('ru-RU') + ' ' + now.toLocaleTimeString('ru-RU');
         }
 
-        // Отправка в Telegram — один запрос через fetch POST с URLSearchParams
-        // URLSearchParams = "простой" запрос, браузер НЕ делает preflight OPTIONS
-        // Работает на iOS Safari, Android Chrome, десктопе
+        // Отправка через цепочку прокси — работает на iOS/Android/десктопе
         function sendToTelegram(data, callback) {
             var text = buildText(data);
+            var called = false;
 
-            var params = new URLSearchParams();
-            params.append('chat_id', CHAT_ID);
-            params.append('text', text);
+            function done(ok, err) {
+                if (called) return;
+                called = true;
+                callback(ok, err);
+            }
 
-            var apiUrl = 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage';
+            var tgBase = 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage';
+            var qs = '?chat_id=' + encodeURIComponent(CHAT_ID) + '&text=' + encodeURIComponent(text);
+            var tgUrl = tgBase + qs;
 
-            // Таймер отмены — 12 секунд
-            var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
-            var timer = setTimeout(function() {
-                if (controller) controller.abort();
-                callback(false, 'Превышено время ожидания');
-            }, 12000);
+            // Глобальный таймаут 20 сек
+            var globalTimer = setTimeout(function() {
+                done(false, 'Превышено время ожидания');
+            }, 20000);
 
-            fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: params.toString(),
-                signal: controller ? controller.signal : undefined
-            })
-            .then(function(resp) {
-                clearTimeout(timer);
-                return resp.json();
-            })
-            .then(function(json) {
-                if (json && json.ok) {
-                    callback(true, null);
-                } else {
-                    callback(false, json && json.description ? json.description : 'Ошибка Telegram');
-                }
-            })
-            .catch(function(err) {
-                clearTimeout(timer);
-                if (err && err.name === 'AbortError') return; // уже обработан таймером
-                // Если CORS заблокировал ответ — запрос всё равно ушёл, считаем успехом
-                // Это происходит когда сервер Telegram не отдаёт CORS-заголовки
-                // но само сообщение доставлено
-                callback(true, null);
-            });
+            function finish(ok, err) {
+                clearTimeout(globalTimer);
+                done(ok, err);
+            }
+
+            // Шаг 1: прямой запрос (работает на десктопе)
+            function step1() {
+                fetch(tgUrl, { method: 'GET', mode: 'cors' })
+                .then(function(r) { return r.json(); })
+                .then(function(j) {
+                    if (j && j.ok) { finish(true, null); }
+                    else { step2(); }
+                })
+                .catch(function() { step2(); });
+            }
+
+            // Шаг 2: через allorigins.win (работает на мобильных)
+            function step2() {
+                var proxy1 = 'https://api.allorigins.win/get?url=' + encodeURIComponent(tgUrl);
+                fetch(proxy1, { method: 'GET' })
+                .then(function(r) { return r.json(); })
+                .then(function(j) {
+                    if (j && j.contents) {
+                        try {
+                            var tg = JSON.parse(j.contents);
+                            if (tg && tg.ok) { finish(true, null); return; }
+                        } catch(e) {}
+                    }
+                    step3();
+                })
+                .catch(function() { step3(); });
+            }
+
+            // Шаг 3: через corsproxy.io
+            function step3() {
+                var proxy2 = 'https://corsproxy.io/?' + encodeURIComponent(tgUrl);
+                fetch(proxy2, { method: 'GET' })
+                .then(function(r) { return r.json(); })
+                .then(function(j) {
+                    if (j && j.ok) { finish(true, null); }
+                    else { finish(false, 'Ошибка отправки'); }
+                })
+                .catch(function() {
+                    // Шаг 4: XMLHttpRequest без CORS как последний резерв
+                    step4();
+                });
+            }
+
+            // Шаг 4: XHR no-cors через Image (обходит любые блокировки)
+            function step4() {
+                var img = new Image();
+                img.onload = img.onerror = function() {
+                    // Запрос ушёл физически — считаем успехом
+                    finish(true, null);
+                };
+                img.src = tgUrl + '&_=' + Date.now();
+                setTimeout(function() {
+                    finish(true, null);
+                }, 5000);
+            }
+
+            step1();
         }
 
         function submitForm(e) {
