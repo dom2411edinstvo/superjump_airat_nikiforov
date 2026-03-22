@@ -330,68 +330,66 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; z-index: 5; overflow: hidden;
-            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            background: #111;
         }
-        .vp-poster-fallback {
+
+        /* Превью-изображение — занимает весь постер */
+        .vp-thumb {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
-            background: linear-gradient(135deg, #1c1008 0%, #0f0f0f 60%, #101510 100%);
-            z-index: 0; pointer-events: none;
+            object-fit: cover; z-index: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
-        /* Превью с фоновым изображением */
-        .vp-poster-fallback.with-photo {
-            background-size: cover;
-            background-position: center top;
-        }
-        .vp-poster-fallback.with-photo::after {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+        .vp-poster:hover .vp-thumb { transform: scale(1.04); }
+
+        /* Затемняющий оверлей поверх превью */
+        .vp-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(180deg,
-                rgba(0,0,0,0.55) 0%,
-                rgba(0,0,0,0.25) 35%,
-                rgba(0,0,0,0.35) 65%,
-                rgba(0,0,0,0.75) 100%);
-            z-index: 0;
-        }
-        .vp-poster-fallback.with-photo > * {
-            position: relative;
+                rgba(0,0,0,0.35) 0%,
+                rgba(0,0,0,0.10) 40%,
+                rgba(0,0,0,0.10) 60%,
+                rgba(0,0,0,0.55) 100%);
             z-index: 1;
         }
-        /* Текстовое превью для видео без фото */
-        .vp-poster-fallback.review-preview {
-            background: linear-gradient(160deg, #1a1208 0%, #0d0d0d 50%, #0d1012 100%);
-        }
-        .vp-poster-fallback.review-preview::before {
-            content: '';
-            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-            background:
-                radial-gradient(circle at 30% 40%, rgba(255,107,53,0.12) 0%, transparent 50%),
-                radial-gradient(circle at 70% 70%, rgba(247,201,72,0.08) 0%, transparent 50%);
-            pointer-events: none;
-        }
+
+        /* Подпись для постера с фото тренера */
         .vp-poster-info {
-            display: flex; flex-direction: column; align-items: center; gap: 6px;
-            text-align: center; z-index: 1; pointer-events: none;
+            position: absolute; bottom: 18px; left: 0; right: 0;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            z-index: 3; pointer-events: none;
         }
         .vp-poster-info-badge {
-            padding: 5px 14px;
+            padding: 4px 14px;
             background: rgba(255, 107, 53, 0.85);
             border-radius: 20px;
             font-size: 10px; font-weight: 700; letter-spacing: 2px;
             color: white; text-transform: uppercase;
         }
         .vp-poster-info-author {
-            font-size: 17px; font-weight: 700; color: rgba(255,255,255,0.9);
+            font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.92);
         }
         .vp-poster-info-desc {
-            font-size: 12px; color: rgba(255,255,255,0.5); font-weight: 500;
+            font-size: 11px; color: rgba(255,255,255,0.6); font-weight: 500;
         }
-        .vp-poster-fallback-icon {
-            width: 56px; height: 56px;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            border-radius: 50%; display: flex; align-items: center; justify-content: center; opacity: 0.25;
+
+        /* Фолбэк когда превью не загрузилось */
+        .vp-fallback-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #1c1008 0%, #0f0f0f 60%, #101510 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+            z-index: 0;
         }
-        .vp-poster-fallback-icon svg { width: 28px; height: 28px; fill: #fff; margin-left: 4px; }
+        .vp-fallback-bg .vp-fb-badge {
+            padding: 5px 14px;
+            background: rgba(255, 107, 53, 0.8);
+            border-radius: 20px;
+            font-size: 10px; font-weight: 700; letter-spacing: 2px;
+            color: white; text-transform: uppercase;
+        }
+        .vp-fallback-bg .vp-fb-title {
+            font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.7); text-align: center; padding: 0 20px;
+        }
+
         .vp-play-btn {
             position: relative; z-index: 3; width: 70px; height: 70px;
             background: rgba(255, 107, 53, 0.92); border-radius: 50%;
@@ -971,14 +969,17 @@
             <div class="appeal-video-container">
                 <div class="appeal-video-aspect">
                     <div class="appeal-video-wrapper">
+                        <!-- Видео-обращение: превью из фото тренера -->
                         <div class="vp-poster"
-                             data-src="https://rutube.ru/play/embed/d7db666ec91df8585381ce45b272d686/?p=1LHHWX3Fj-Qcnrf3XT--KQ&autoplay=1&loop=0">
-                            <div class="vp-poster-fallback with-photo" style="background-image: url('IMG/img-1.jpg');">
-                                <div class="vp-poster-info">
-                                    <div class="vp-poster-info-badge">ВИДЕООБРАЩЕНИЕ</div>
-                                    <div class="vp-poster-info-author">Айрат Никифоров</div>
-                                    <div class="vp-poster-info-desc">Интеллект-тренер Super Jump</div>
-                                </div>
+                             data-src="https://rutube.ru/play/embed/d7db666ec91df8585381ce45b272d686/?p=1LHHWX3Fj-Qcnrf3XT--KQ&autoplay=1&loop=0"
+                             data-video-id="d7db666ec91df8585381ce45b272d686">
+                            <!-- Фото тренера как превью -->
+                            <img class="vp-thumb" src="IMG/img-1.jpg" alt="Видеообращение Айрата Никифорова">
+                            <div class="vp-overlay"></div>
+                            <div class="vp-poster-info">
+                                <div class="vp-poster-info-badge">ВИДЕООБРАЩЕНИЕ</div>
+                                <div class="vp-poster-info-author">Айрат Никифоров</div>
+                                <div class="vp-poster-info-desc">Интеллект-тренер Super Jump</div>
                             </div>
                             <div class="vp-play-btn">
                                 <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
@@ -1116,14 +1117,19 @@
                 <p class="section-desc">Реальные видеоотзывы клиентов Айрата Никифорова — об изменениях в здоровье, мышлении и качестве жизни</p>
             </div>
             <div class="reviews-grid">
+
+                <!-- Отзыв 1 -->
                 <div class="review-card">
                     <div class="review-video">
-                        <div class="vp-poster" data-src="https://rutube.ru/play/embed/2d4c91ded9aa2246c7c7fdf7ab4219f4/?p=NRqhaJgqhSzr6x-LVazrJA&autoplay=1&loop=0">
-                            <div class="vp-poster-fallback review-preview">
-                                <div class="vp-poster-info">
-                                    <div class="vp-poster-info-badge">ВИДЕООТЗЫВ</div>
-                                    <div class="vp-poster-info-desc">Опыт трансформации</div>
-                                </div>
+                        <div class="vp-poster"
+                             data-src="https://rutube.ru/play/embed/2d4c91ded9aa2246c7c7fdf7ab4219f4/?p=NRqhaJgqhSzr6x-LVazrJA&autoplay=1&loop=0"
+                             data-video-id="2d4c91ded9aa2246c7c7fdf7ab4219f4">
+                            <img class="vp-thumb" src="https://rutube.ru/api/video/2d4c91ded9aa2246c7c7fdf7ab4219f4/thumbnail/?redirect=1" alt="Видеоотзыв 1"
+                                 onerror="this.style.display='none'; this.parentElement.querySelector('.vp-fallback-bg').style.display='flex';">
+                            <div class="vp-overlay"></div>
+                            <div class="vp-fallback-bg" style="display:none;">
+                                <div class="vp-fb-badge">ВИДЕООТЗЫВ</div>
+                                <div class="vp-fb-title">Опыт трансформации</div>
                             </div>
                             <div class="vp-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
                         </div>
@@ -1134,14 +1140,19 @@
                         <p class="review-text">Видеоотзыв участника интеллект-тренировок Super Jump о личном опыте трансформации</p>
                     </div>
                 </div>
+
+                <!-- Отзыв 2 -->
                 <div class="review-card">
                     <div class="review-video">
-                        <div class="vp-poster" data-src="https://rutube.ru/play/embed/f92a4c0a795d70197ef68c9f2014361d/?p=xmME7wfDPGbgP17Gw1RFYw&autoplay=1&loop=0">
-                            <div class="vp-poster-fallback review-preview">
-                                <div class="vp-poster-info">
-                                    <div class="vp-poster-info-badge">ВИДЕООТЗЫВ</div>
-                                    <div class="vp-poster-info-desc">Внутренняя гармония</div>
-                                </div>
+                        <div class="vp-poster"
+                             data-src="https://rutube.ru/play/embed/f92a4c0a795d70197ef68c9f2014361d/?p=xmME7wfDPGbgP17Gw1RFYw&autoplay=1&loop=0"
+                             data-video-id="f92a4c0a795d70197ef68c9f2014361d">
+                            <img class="vp-thumb" src="https://rutube.ru/api/video/f92a4c0a795d70197ef68c9f2014361d/thumbnail/?redirect=1" alt="Видеоотзыв 2"
+                                 onerror="this.style.display='none'; this.parentElement.querySelector('.vp-fallback-bg').style.display='flex';">
+                            <div class="vp-overlay"></div>
+                            <div class="vp-fallback-bg" style="display:none;">
+                                <div class="vp-fb-badge">ВИДЕООТЗЫВ</div>
+                                <div class="vp-fb-title">Внутренняя гармония</div>
                             </div>
                             <div class="vp-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
                         </div>
@@ -1152,14 +1163,19 @@
                         <p class="review-text">Реальный результат: как интеллект-тренировки помогли обрести внутреннюю гармонию</p>
                     </div>
                 </div>
+
+                <!-- Отзыв 3 -->
                 <div class="review-card">
                     <div class="review-video">
-                        <div class="vp-poster" data-src="https://rutube.ru/play/embed/594f1218e0b257735dfeab2a492a80cb/?p=jAk1irdP7IHK0iNoNpax9A&autoplay=1&loop=0">
-                            <div class="vp-poster-fallback review-preview">
-                                <div class="vp-poster-info">
-                                    <div class="vp-poster-info-badge">ВИДЕООТЗЫВ</div>
-                                    <div class="vp-poster-info-desc">История изменений</div>
-                                </div>
+                        <div class="vp-poster"
+                             data-src="https://rutube.ru/play/embed/594f1218e0b257735dfeab2a492a80cb/?p=jAk1irdP7IHK0iNoNpax9A&autoplay=1&loop=0"
+                             data-video-id="594f1218e0b257735dfeab2a492a80cb">
+                            <img class="vp-thumb" src="https://rutube.ru/api/video/594f1218e0b257735dfeab2a492a80cb/thumbnail/?redirect=1" alt="Видеоотзыв 3"
+                                 onerror="this.style.display='none'; this.parentElement.querySelector('.vp-fallback-bg').style.display='flex';">
+                            <div class="vp-overlay"></div>
+                            <div class="vp-fallback-bg" style="display:none;">
+                                <div class="vp-fb-badge">ВИДЕООТЗЫВ</div>
+                                <div class="vp-fb-title">История изменений</div>
                             </div>
                             <div class="vp-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
                         </div>
@@ -1170,14 +1186,19 @@
                         <p class="review-text">История трансформации: от первого занятия до ощутимых изменений в жизни</p>
                     </div>
                 </div>
+
+                <!-- Отзыв 4 -->
                 <div class="review-card">
                     <div class="review-video">
-                        <div class="vp-poster" data-src="https://rutube.ru/play/embed/09914fdf882efef8976226027b735fde/?p=_WX_FXXEO8URPl8QZ_3KWA&autoplay=1&loop=0">
-                            <div class="vp-poster-fallback review-preview">
-                                <div class="vp-poster-info">
-                                    <div class="vp-poster-info-badge">ВИДЕООТЗЫВ</div>
-                                    <div class="vp-poster-info-desc">Путь к переменам</div>
-                                </div>
+                        <div class="vp-poster"
+                             data-src="https://rutube.ru/play/embed/09914fdf882efef8976226027b735fde/?p=_WX_FXXEO8URPl8QZ_3KWA&autoplay=1&loop=0"
+                             data-video-id="09914fdf882efef8976226027b735fde">
+                            <img class="vp-thumb" src="https://rutube.ru/api/video/09914fdf882efef8976226027b735fde/thumbnail/?redirect=1" alt="Видеоотзыв 4"
+                                 onerror="this.style.display='none'; this.parentElement.querySelector('.vp-fallback-bg').style.display='flex';">
+                            <div class="vp-overlay"></div>
+                            <div class="vp-fallback-bg" style="display:none;">
+                                <div class="vp-fb-badge">ВИДЕООТЗЫВ</div>
+                                <div class="vp-fb-title">Путь к переменам</div>
                             </div>
                             <div class="vp-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
                         </div>
@@ -1188,6 +1209,7 @@
                         <p class="review-text">Путь к переменам: участник делится опытом интеллект-тренировок Super Jump</p>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -1500,7 +1522,6 @@
             var iframeWrap = wrap.querySelector('.vp-iframe-wrap');
             if (!iframeWrap) return;
 
-            // Создаём маску для скрытия заголовка
             var mask = document.createElement('div');
             mask.className = 'vp-title-mask';
 
@@ -1536,7 +1557,6 @@
                 if (msg.type === 'player:changeState' && msg.data && msg.data.state === 'playing') {
                     if (!started) { started = true; }
                     else if (ended) {
-                        // Видео пытается воспроизвестись повторно — останавливаем
                         window.removeEventListener('message', onMsg);
                         stopIframeWrap(iframeWrap);
                         return;
@@ -1550,7 +1570,6 @@
                     if (started) {
                         ended = true;
                         window.removeEventListener('message', onMsg);
-                        // После окончания видео — возвращаем постер, автовоспроизведение отключено
                         setTimeout(function() { stopIframeWrap(iframeWrap); }, 800);
                     }
                 }
@@ -1592,7 +1611,6 @@
 
             var apiUrl = 'https://api.telegram.org/bot' + BOT_TOKEN + '/sendMessage';
 
-            // Method 1: fetch POST JSON
             function method1() {
                 try {
                     fetch(apiUrl, {
@@ -1605,7 +1623,6 @@
                 } catch(e) { method2(); }
             }
 
-            // Method 2: fetch POST FormData
             function method2() {
                 try {
                     var fd = new FormData();
@@ -1618,7 +1635,6 @@
                 } catch(e) { method3(); }
             }
 
-            // Method 3: XHR POST
             function method3() {
                 try {
                     var xhr = new XMLHttpRequest();
@@ -1637,7 +1653,6 @@
                 } catch(e) { method4(); }
             }
 
-            // Method 4: Image GET
             function method4() {
                 try {
                     var getUrl = apiUrl + '?chat_id=' + encodeURIComponent(CHAT_ID) + '&text=' + encodeURIComponent(text);
@@ -1753,6 +1768,5 @@
     </script>
 
     <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>
