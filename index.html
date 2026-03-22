@@ -127,7 +127,9 @@
         header.scrolled { background: rgba(10, 10, 10, 0.95); backdrop-filter: blur(10px); }
         header .container { display: flex; justify-content: space-between; align-items: center; }
 
-        .logo { display: flex; align-items: center; gap: 12px; }
+        .logo { display: flex; align-items: center; gap: 12px; cursor: pointer; pointer-events: all; text-decoration: none; }
+        a.logo, a.logo:hover, a.logo:visited { color: inherit; text-decoration: none; }
+        .logo * { pointer-events: none; }
         .logo-icon {
             width: 48px; height: 48px;
             background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -871,7 +873,7 @@
     <!-- Header -->
     <header id="header">
         <div class="container">
-            <div class="logo">
+            <a href="#" class="logo" id="logoHome" aria-label="На главную">
                 <div class="logo-icon">
                     <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="18" cy="6.5" r="3.5" fill="white"/>
@@ -890,7 +892,7 @@
                     <span class="logo-super">SUPER</span>
                     <span class="logo-jump">JUMP</span>
                 </div>
-            </div>
+            </a>
             <nav>
                 <a href="#what">ЧТО ТАКОЕ</a>
                 <a href="#results">РЕЗУЛЬТАТЫ</a>
@@ -1773,6 +1775,12 @@
         });
         phoneInput.addEventListener('click', function() {
             try { if (this.selectionStart < 3) this.selectionStart = this.selectionEnd = this.value.length; } catch(err) {}
+        });
+
+        // Logo click — scroll to top
+        document.getElementById('logoHome').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     </script>
 
