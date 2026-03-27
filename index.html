@@ -891,7 +891,7 @@
         }
         .footer-dev-line {
             font-size: 12px; color: var(--text-muted);
-            display: flex; align-items: center; justify-content: flex-end; gap: 5px; flex-wrap: wrap;
+            display: flex; align-items: center; justify-content: flex-end; gap: 6px; flex-wrap: wrap;
         }
         .dev-tg-link {
             color: var(--tg-color); font-weight: 700; font-size: 15px; text-decoration: none;
@@ -968,6 +968,7 @@
 
             .what-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; }
             .appeal-layout { grid-template-columns: 1fr; }
+            .appeal-label { display: none; }
             .appeal-text { padding: 50px 40px; }
             .appeal-text::before { display: none; }
             .appeal-stats { gap: 12px; }
@@ -1044,15 +1045,15 @@
             .btn { padding: 11px 20px; font-size: 11px; letter-spacing: 0.3px; }
 
             /* Appeal */
+            .appeal-label { display: none; }
             .appeal-text { padding: 30px 16px; }
-            .appeal-text h2 { font-size: clamp(18px, 5vw, 26px); }
+            .appeal-text h2 { font-size: clamp(18px, 5vw, 26px); margin-top: 0; }
             .appeal-text > p { font-size: 14px; }
             .appeal-stats { gap: 8px; }
             .appeal-stat { padding: 10px 8px; }
             .appeal-stat-val { font-size: 18px; }
             .appeal-stat-label { font-size: 10px; }
             .appeal-quote { padding: 14px 16px; font-size: 13px; }
-            .appeal-label { font-size: 10px; letter-spacing: 2px; }
 
             /* Reviews */
             .reviews-grid { gap: 20px; }
@@ -1768,9 +1769,7 @@
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.013 12.013 0 0 0 11.944 0Zm5.655 7.22c-.18 1.897-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.064-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345c-.479.33-.913.49-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.244-1.349-.374-1.297-.789c.027-.216.325-.437.893-.663c3.498-1.524 5.83-2.529 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635c.099-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472Z"></path></svg>
                             samadhi2411
                         </a>
-                        &nbsp;·&nbsp;
                         <a href="https://max.ru/u/f9LHodD0cOKDY1emmUrupKlXJll32btrvJyZe3d0CeMmvy_rHDa2TWoayQc" target="_blank" rel="noopener" class="dev-max-link">MAX</a>
-                        &nbsp;·&nbsp;
                         <a href="https://vk.com/samadhi2411" target="_blank" rel="noopener" class="dev-vk-link">
                             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.391 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.847 2.456 2.27 4.607 2.862 4.607.22 0 .322-.102.322-.66V10.33c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.644v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.253-1.406 2.15-3.574 2.15-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.644-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.491-.085.745-.576.745z"></path></svg>
                             Вконтакте
