@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Super Jump — Айрат Никифоров | Интеллект-тренер, тренировки для подсознания</title>
-    <meta name="description" content="Super Jump — интеллект-тренер Айрат Никифоров. Онлайн-тренировки для перепрограммирования подсознания, снятия стресса, улучшения здоровья. Запись на пробное занятие ☎ +7 917 497-17-26">
+    <meta name="description" content="Super Jump — интеллект-тренер Айрат Никифоров. Онлайн-тренировки для перепрограммирования подсознания, снятия стресса, улучшения здоровья. Бесплатная консультация ☎ +7 917 497-17-26">
     <meta name="keywords" content="Super Jump, интеллект-тренер, Айрат Никифоров, тренировки подсознание, перепрограммирование подсознания, психологическая трансформация, снятие стресса, похудение, онлайн тренировки">
     <meta name="author" content="Айрат Никифоров">
     <meta name="robots" content="index, follow">
@@ -212,8 +212,9 @@
         @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
         .hero h1 {
-            font-size: clamp(36px, 5vw, 56px);
-            font-weight: 900; line-height: 1.1; margin-bottom: 25px; color: var(--text);
+            font-size: clamp(22px, 2.6vw, 38px);
+            font-weight: 900; line-height: 1.2; margin-bottom: 25px; color: var(--text);
+            white-space: normal;
         }
         .hero h1 span {
             background: linear-gradient(135deg, var(--accent), var(--accent2));
@@ -253,44 +254,6 @@
             box-shadow: 0 25px 60px rgba(255, 107, 53, 0.2);
         }
         .hero-photo img { width: 100%; height: 100%; object-fit: cover; border-radius: 28px; }
-
-        /* Float cards — теперь поверх фото, в углах */
-        .hero-float-card {
-            position: absolute;
-            background: rgba(20, 20, 20, 0.92);
-            backdrop-filter: blur(8px);
-            border-radius: 14px;
-            padding: 10px 14px;
-            border: 1px solid rgba(255,255,255,0.12);
-            animation: float 3s ease-in-out infinite;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            min-width: 0;
-            max-width: 160px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
-        }
-        .hero-float-card.card-1 {
-            top: 14px;
-            right: 14px;
-            animation-delay: 0s;
-        }
-        .hero-float-card.card-2 {
-            bottom: 14px;
-            left: 14px;
-            animation-delay: 1.5s;
-        }
-        .float-icon {
-            width: 34px; height: 34px; min-width: 34px;
-            background: linear-gradient(135deg, var(--accent), var(--accent2));
-            border-radius: 10px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 16px;
-        }
-        .float-info { display: flex; flex-direction: column; line-height: 1.2; }
-        .float-text { font-size: 10px; color: var(--text-muted); white-space: nowrap; }
-        .float-value { font-size: 13px; font-weight: 700; color: var(--text); white-space: nowrap; }
 
         @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
@@ -400,6 +363,13 @@
             object-position: center top;
             z-index: 0;
             transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        /* Отзывы 3 и 4 — показываем лицо полностью */
+        .review-card:nth-child(3) .vp-thumb,
+        .review-card:nth-child(4) .vp-thumb {
+            object-position: center 25%;
+            object-fit: contain;
+            background: #111;
         }
         /* Appeal video — показываем голову полностью */
         .appeal-video-wrapper .vp-thumb {
@@ -662,6 +632,85 @@
             letter-spacing: 2px; z-index: 10;
         }
 
+        /* ============================================
+           CERTIFICATES SECTION — отдельный раздел
+           ============================================ */
+        .certs-section {
+            background: linear-gradient(180deg, #0f0f0f 0%, var(--bg-card) 100%);
+            position: relative; overflow: hidden;
+        }
+        .certs-section::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background:
+                radial-gradient(circle at 15% 50%, rgba(255, 107, 53, 0.07) 0%, transparent 45%),
+                radial-gradient(circle at 85% 30%, rgba(247, 201, 72, 0.06) 0%, transparent 40%);
+            pointer-events: none;
+        }
+        .certs-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            position: relative; z-index: 1;
+        }
+        .certs-grid .cert-card {
+            background: var(--bg-dark);
+            border-radius: 20px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.07);
+            cursor: pointer; transition: all 0.35s;
+            display: flex; flex-direction: column;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+        }
+        .certs-grid .cert-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 107, 53, 0.5);
+            box-shadow: 0 16px 40px rgba(255, 107, 53, 0.2);
+        }
+        .certs-grid .cert-image {
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #1a1a1a, #252525);
+            display: flex; align-items: center; justify-content: center;
+            margin: 12px 12px 0 12px;
+            border-radius: 12px; overflow: hidden;
+            position: relative;
+        }
+        .certs-grid .cert-image img {
+            width: 100%; height: 100%; object-fit: cover;
+            position: absolute; top: 0; left: 0;
+            transition: transform 0.35s ease;
+        }
+        .certs-grid .cert-card:hover .cert-image img {
+            transform: scale(1.05);
+        }
+        .certs-grid .cert-image::after {
+            content: '🔍';
+            position: absolute; bottom: 10px; right: 10px;
+            width: 34px; height: 34px;
+            background: rgba(255, 107, 53, 0.85);
+            border-radius: 50%; font-size: 16px;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; transition: opacity 0.3s; z-index: 2;
+        }
+        .certs-grid .cert-card:hover .cert-image::after { opacity: 1; }
+        .certs-grid .cert-title {
+            padding: 14px 14px 16px;
+            font-size: 13px; font-weight: 600;
+            color: var(--text-light); text-align: center;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 1024px) {
+            .certs-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+        }
+        @media (max-width: 768px) {
+            .certs-grid { grid-template-columns: repeat(2, 1fr); gap: 14px; }
+            .certs-grid .cert-title { font-size: 12px; padding: 10px 10px 12px; }
+        }
+        @media (max-width: 480px) {
+            .certs-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .certs-grid .cert-image { margin: 8px 8px 0; border-radius: 10px; }
+            .certs-grid .cert-title { font-size: 11px; padding: 8px 8px 10px; }
+        }
+
         .intellect-section { background: var(--bg-card); }
         .intellect-content { max-width: 800px; margin: 0 auto; text-align: center; }
         .intellect-icon {
@@ -832,19 +881,18 @@
         .footer-social-link.social-wa svg { fill: var(--wa-color); }
         .footer-social-link.social-wa:hover { background: var(--wa-color); border-color: var(--wa-color); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3); }
         .footer-social-link.social-wa:hover svg { fill: #fff; }
-        .footer-bottom { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; }
+        .footer-bottom {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            flex-wrap: wrap; gap: 10px;
+        }
         .footer-bottom p { font-size: 13px; color: var(--text-muted); }
-
-        /* Footer Developer */
-        .footer-dev {
-            width: 100%; text-align: center; margin-top: 20px; padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.06);
+        .footer-bottom-right {
+            display: flex; flex-direction: column; align-items: flex-end; gap: 6px;
         }
         .footer-dev-line {
-            font-size: 13px; color: var(--text-muted); margin-bottom: 8px;
-            display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap;
+            font-size: 12px; color: var(--text-muted);
+            display: flex; align-items: center; justify-content: flex-end; gap: 5px; flex-wrap: wrap;
         }
-        .footer-dev-line:last-child { margin-bottom: 0; }
         .dev-tg-link {
             color: var(--tg-color); font-weight: 700; font-size: 15px; text-decoration: none;
             padding: 2px 8px; border-radius: 6px;
@@ -940,6 +988,7 @@
             .contact-item { justify-content: center; text-align: left; }
             .social-links { justify-content: center; }
             .section-title-nowrap { white-space: normal; }
+            .hero h1 { white-space: normal; font-size: clamp(22px, 3.5vw, 34px); }
         }
 
         /* ============================================
@@ -956,13 +1005,13 @@
 
             /* Hero mobile: фото сверху, текст по центру снизу */
             .hero {
-                padding-top: 80px;
-                padding-bottom: 50px;
+                padding-top: 72px;
+                padding-bottom: 30px;
                 min-height: unset;
             }
             .hero-content {
                 grid-template-columns: 1fr;
-                gap: 24px;
+                gap: 16px;
                 justify-items: center;
             }
             /* Фото — первым (сверху) */
@@ -979,31 +1028,20 @@
                 align-items: center;
                 width: 100%;
             }
-            .hero-desc { max-width: 100%; font-size: 14px; margin-bottom: 24px; }
-            .hero-buttons { justify-content: center; flex-wrap: wrap; gap: 12px; }
-            .hero-gift-note { justify-content: center; text-align: center; font-size: 13px; }
-            .hero h1 { font-size: clamp(22px, 6vw, 32px); }
-            .hero-badge { font-size: 10px; letter-spacing: 1px; padding: 6px 14px; margin-bottom: 16px; }
+            .hero-desc { max-width: 100%; font-size: 13px; margin-bottom: 14px; }
+            .hero-buttons { justify-content: center; flex-wrap: wrap; gap: 10px; }
+            .hero-gift-note { justify-content: center; text-align: center; font-size: 12px; margin-top: 10px; }
+            .hero h1 { font-size: clamp(18px, 5.5vw, 26px); white-space: normal; line-height: 1.2; margin-bottom: 14px; }
+            .hero-badge { font-size: 9px; letter-spacing: 1px; padding: 5px 12px; margin-bottom: 12px; }
 
             /* Фото размер на мобильном */
-            .hero-photo { width: 200px; height: 260px; border-radius: 24px; }
-            .hero-photo img { border-radius: 22px; }
+            .hero-photo { width: 170px; height: 220px; border-radius: 20px; }
+            .hero-photo img { border-radius: 18px; }
 
-            /* Float cards — маленькие, в углах фото */
-            .hero-float-card {
-                padding: 3px 5px;
-                border-radius: 6px;
-                gap: 3px;
-                max-width: 72px;
-            }
-            .hero-float-card.card-1 { top: 6px; right: 6px; }
-            .hero-float-card.card-2 { bottom: 6px; left: 6px; }
-            .float-icon { width: 14px; height: 14px; min-width: 14px; font-size: 7px; border-radius: 4px; }
-            .float-text { font-size: 5px; }
-            .float-value { font-size: 6px; }
+
 
             /* Кнопки */
-            .btn { padding: 13px 24px; font-size: 12px; letter-spacing: 0.5px; }
+            .btn { padding: 11px 20px; font-size: 11px; letter-spacing: 0.3px; }
 
             /* Appeal */
             .appeal-text { padding: 30px 16px; }
@@ -1084,9 +1122,10 @@
             .footer-social-link { width: 40px; height: 40px; }
             .footer-top { justify-content: center; text-align: center; }
             .footer-bottom { justify-content: center; text-align: center; }
-            .footer-dev-line { font-size: 12px; }
-            .dev-tg-link, .dev-max-link { font-size: 13px; }
-            .dev-vk-link { font-size: 12px; }
+            .footer-bottom-right { align-items: center; }
+            .footer-dev-line { justify-content: center; font-size: 11px; }
+            .dev-tg-link, .dev-max-link { font-size: 12px; }
+            .dev-vk-link { font-size: 11px; }
 
             /* Cert modal arrows */
             .cert-modal-arrow { width: 44px; height: 44px; }
@@ -1099,8 +1138,8 @@
         @media (max-width: 480px) {
             .container { padding: 0 14px; }
             section { padding: 40px 0; }
-            .hero { padding-top: 75px; padding-bottom: 40px; }
-            .hero-photo { width: 180px; height: 235px; }
+            .hero { padding-top: 68px; padding-bottom: 28px; }
+            .hero-photo { width: 150px; height: 195px; }
             .results-grid { grid-template-columns: 1fr; }
             .about-stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
             .about-stat { padding: 14px 5px; }
@@ -1161,6 +1200,7 @@
                 <a href="#who">ДЛЯ КОГО</a>
                 <a href="#reviews">ОТЗЫВЫ</a>
                 <a href="#about">ТРЕНЕР</a>
+                <a href="#certificates">СЕРТИФИКАТЫ</a>
                 <a href="#gift">ПОДАРОК</a>
                 <a href="#contact">КОНТАКТЫ</a>
             </nav>
@@ -1178,6 +1218,7 @@
         <a href="#who">ДЛЯ КОГО</a>
         <a href="#reviews">ОТЗЫВЫ</a>
         <a href="#about">ТРЕНЕР</a>
+        <a href="#certificates">СЕРТИФИКАТЫ</a>
         <a href="#gift">ПОДАРОК</a>
         <a href="#contact">ЗАПИСАТЬСЯ</a>
     </div>
@@ -1190,34 +1231,19 @@
                 <!-- Текст слева (десктоп) / снизу (мобайл) -->
                 <div class="hero-text">
                     <div class="hero-badge">ОНЛАЙН-ТРЕНИРОВКИ • ПО ВСЕМУ МИРУ</div>
-                    <h1>Перепрограммируй <span>подсознание</span> с Super Jump</h1>
+                    <h1>Перепрограммируй <span>подсознание</span><br>с Айратом Никифоровым</h1>
                     <p class="hero-desc">Комплекс интеллектуальных упражнений — решайте психологические проблемы, улучшайте здоровье и достигайте жизненных целей онлайн</p>
                     <div class="hero-buttons">
                         <a href="#contact" class="btn btn-primary">ЗАПИСАТЬСЯ НА ЗАНЯТИЕ</a>
                         <a href="#what" class="btn btn-secondary">УЗНАТЬ БОЛЬШЕ</a>
                     </div>
-                    <p class="hero-gift-note">🎁 Книга «Самое важное о вашем интеллекте» — в подарок при записи</p>
+                    <p class="hero-gift-note">🎁 Книга «Самое важное о вашем интеллекте» — в подарок</p>
                 </div>
                 <!-- Фото справа (десктоп) / сверху (мобайл) -->
                 <div class="hero-image">
                     <div class="hero-photo">
                         <img src="IMG/img-1.jpg" alt="Айрат Никифоров — интеллект-тренер Super Jump" width="350" height="450">
-                        <!-- Карточка: правый верхний угол -->
-                        <div class="hero-float-card card-1">
-                            <div class="float-icon">🎯</div>
-                            <div class="float-info">
-                                <span class="float-text">Стаж работы</span>
-                                <span class="float-value">4+ года</span>
-                            </div>
-                        </div>
-                        <!-- Карточка: левый нижний угол -->
-                        <div class="hero-float-card card-2">
-                            <div class="float-icon">🏆</div>
-                            <div class="float-info">
-                                <span class="float-text">Статус</span>
-                                <span class="float-value">Легенда SJ</span>
-                            </div>
-                        </div>
+        
                     </div>
                 </div>
             </div>
@@ -1514,18 +1540,48 @@
                         <div class="about-stat"><div class="about-stat-value">7</div><div class="about-stat-label">Сертификатов</div></div>
                         <div class="about-stat"><div class="about-stat-value">∞</div><div class="about-stat-label">Учеников</div></div>
                     </div>
-                    <div class="certificates">
-                        <h4>Сертификаты и достижения</h4>
-                        <div class="cert-grid">
-                            <div class="cert-card" data-cert="IMG/cert.jpg"><div class="cert-image"><img src="IMG/cert.jpg" alt="Сертификат мастер интеллект-тренер Super Jump" loading="lazy"></div><div class="cert-title">Мастер интеллект-тренер Super Jump</div></div>
-                            <div class="cert-card" data-cert="IMG/cert-1.jpg"><div class="cert-image"><img src="IMG/cert-1.jpg" alt="Сертификат 1 ранг Super Jump" loading="lazy"></div><div class="cert-title">1 ранг Super Jump</div></div>
-                            <div class="cert-card" data-cert="IMG/cert-2.jpg"><div class="cert-image"><img src="IMG/cert-2.jpg" alt="Сертификат 2 ранг Super Jump" loading="lazy"></div><div class="cert-title">2 ранг Super Jump</div></div>
-                            <div class="cert-card" data-cert="IMG/cert-3.jpg"><div class="cert-image"><img src="IMG/cert-3.jpg" alt="Сертификат личное окружение лидеров Владимира Довганя" loading="lazy"></div><div class="cert-title">Личное окружение лидеров Владимира Довганя</div></div>
-                            <div class="cert-card" data-cert="IMG/cert-4.jpg"><div class="cert-image"><img src="IMG/cert-4.jpg" alt="Сертификат Легенда Super Jump" loading="lazy"></div><div class="cert-title">Легенда Super Jump</div></div>
-                            <div class="cert-card" data-cert="IMG/cert-5.jpg"><div class="cert-image"><img src="IMG/cert-5.jpg" alt="Сертификат Решительный лидер железной воли" loading="lazy"></div><div class="cert-title">Решительный лидер железной воли</div></div>
-                            <div class="cert-card" data-cert="IMG/cert-6.jpg"><div class="cert-image"><img src="IMG/cert-6.jpg" alt="Дополнительный сертификат Super Jump" loading="lazy"></div><div class="cert-title">Дополнительный сертификат</div></div>
-                        </div>
-                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certificates Section -->
+    <section class="certs-section" id="certificates">
+        <div class="container">
+            <div class="section-header">
+                <div class="section-badge">ДОСТИЖЕНИЯ</div>
+                <h2 class="section-title">Сертификаты и достижения</h2>
+                <p class="section-desc">Айрат Никифоров — сертифицированный мастер со статусом «Легенда». Нажмите на сертификат, чтобы посмотреть его подробнее</p>
+            </div>
+            <div class="certs-grid">
+                <div class="cert-card" data-cert="IMG/cert.jpg">
+                    <div class="cert-image"><img src="IMG/cert.jpg" alt="Сертификат мастер интеллект-тренер Super Jump" loading="lazy"></div>
+                    <div class="cert-title">Мастер интеллект-тренер Super Jump</div>
+                </div>
+                <div class="cert-card" data-cert="IMG/cert-1.jpg">
+                    <div class="cert-image"><img src="IMG/cert-1.jpg" alt="Сертификат 1 ранг Super Jump" loading="lazy"></div>
+                    <div class="cert-title">1 ранг Super Jump</div>
+                </div>
+                <div class="cert-card" data-cert="IMG/cert-2.jpg">
+                    <div class="cert-image"><img src="IMG/cert-2.jpg" alt="Сертификат 2 ранг Super Jump" loading="lazy"></div>
+                    <div class="cert-title">2 ранг Super Jump</div>
+                </div>
+                <div class="cert-card" data-cert="IMG/cert-3.jpg">
+                    <div class="cert-image"><img src="IMG/cert-3.jpg" alt="Сертификат личное окружение лидеров Владимира Довганя" loading="lazy"></div>
+                    <div class="cert-title">Личное окружение лидеров Владимира Довганя</div>
+                </div>
+                <div class="cert-card" data-cert="IMG/cert-4.jpg">
+                    <div class="cert-image"><img src="IMG/cert-4.jpg" alt="Сертификат Легенда Super Jump" loading="lazy"></div>
+                    <div class="cert-title">Легенда Super Jump</div>
+                </div>
+                <div class="cert-card" data-cert="IMG/cert-5.jpg">
+                    <div class="cert-image"><img src="IMG/cert-5.jpg" alt="Сертификат Решительный лидер железной воли" loading="lazy"></div>
+                    <div class="cert-title">Решительный лидер железной воли</div>
+                </div>
+                <div class="cert-card" data-cert="IMG/cert-6.jpg">
+                    <div class="cert-image"><img src="IMG/cert-6.jpg" alt="Дополнительный сертификат Super Jump" loading="lazy"></div>
+                    <div class="cert-title">Дополнительный сертификат</div>
                 </div>
             </div>
         </div>
@@ -1547,8 +1603,8 @@
         <div class="container">
             <div class="section-header">
                 <div class="section-badge">🎁 ПОДАРОК</div>
-                <h2 class="section-title">Книга в подарок при записи</h2>
-                <p class="section-desc">Запишитесь на пробное занятие и получите книгу «Самое важное о вашем интеллекте» бесплатно</p>
+                <h2 class="section-title">Книга в подарок</h2>
+                <p class="section-desc">Запишитесь на занятие и получите книгу «Самое важное о вашем интеллекте» в подарок</p>
             </div>
             <div class="gift-card">
                 <div class="gift-visual">
@@ -1561,14 +1617,14 @@
                 </div>
                 <div class="gift-info">
                     <div class="gift-label">🎁 ПОДАРОК ДЛЯ ВАС</div>
-                    <h3>Получите книгу «Самое важное о вашем интеллекте» бесплатно</h3>
-                    <p>Отправьте заявку на пробное занятие или напишите Айрату лично — и получите в подарок книгу, которая откроет вам путь к осознанной работе с собственным разумом.</p>
+                    <h3>Получите книгу «Самое важное о вашем интеллекте» в подарок</h3>
+                    <p>Отправьте заявку на бесплатную консультацию или напишите Айрату лично — и получите в подарок книгу, которая откроет вам путь к осознанной работе с собственным разумом.</p>
                     <ul class="gift-benefits">
                         <li>Как устроен ваш интеллект и скрытые ресурсы мозга</li>
                         <li>Почему подсознательные программы управляют жизнью</li>
                         <li>Первые шаги к глубинной трансформации</li>
                     </ul>
-                    <a href="#contact" class="btn btn-primary">ПОЛУЧИТЬ КНИГУ БЕСПЛАТНО</a>
+                    <a href="#contact" class="btn btn-primary">ПОЛУЧИТЬ КНИГУ В ПОДАРОК</a>
                 </div>
             </div>
         </div>
@@ -1580,7 +1636,7 @@
             <div class="section-header">
                 <div class="section-badge">НАЧНИТЕ СЕЙЧАС</div>
                 <h2 class="section-title">Запишитесь на занятие Super Jump</h2>
-                <p class="section-desc">Оставьте заявку — Айрат свяжется с вами, подберёт удобное время для пробного занятия и отправит книгу «Самое важное о вашем интеллекте» в подарок</p>
+                <p class="section-desc">Оставьте заявку — Айрат свяжется с вами, подберёт удобное время для бесплатной консультации и отправит книгу «Самое важное о вашем интеллекте» в подарок</p>
             </div>
             <div class="contact-grid">
                 <div class="contact-info">
@@ -1623,7 +1679,7 @@
 
                 <form class="contact-form" id="contactForm" novalidate>
                     <h4>Записаться и получить книгу в подарок</h4>
-                    <p class="contact-form-gift">🎁 Книга «Самое важное о вашем интеллекте» — бесплатно</p>
+                    <p class="contact-form-gift">🎁 Книга «Самое важное о вашем интеллекте» — в подарок</p>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="nameInput">Имя *</label>
@@ -1704,24 +1760,23 @@
             </div>
             <div class="footer-bottom">
                 <p>© 2026 Айрат Никифоров. Все права защищены.</p>
-                <p>Super Jump — сделано с ❤️</p>
-            </div>
-            <div class="footer-dev">
-                <p class="footer-dev-line">
-                    Разработчик сайта —
-                    <a href="https://t.me/samadhi2411" target="_blank" rel="noopener" class="dev-tg-link">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.013 12.013 0 0 0 11.944 0Zm5.655 7.22c-.18 1.897-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.064-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345c-.479.33-.913.49-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.244-1.349-.374-1.297-.789c.027-.216.325-.437.893-.663c3.498-1.524 5.83-2.529 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635c.099-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472Z"></path></svg>
-                        samadhi2411
-                    </a>
-                </p>
-                <p class="footer-dev-line">
-                    Нужен сайт? Пиши →
-                    <a href="https://max.ru/u/f9LHodD0cOKDY1emmUrupKlXJll32btrvJyZe3d0CeMmvy_rHDa2TWoayQc" target="_blank" rel="noopener" class="dev-max-link">MAX</a>
-                    <a href="https://vk.com/samadhi2411" target="_blank" rel="noopener" class="dev-vk-link">
-                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.391 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.847 2.456 2.27 4.607 2.862 4.607.22 0 .322-.102.322-.66V10.33c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.644v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.253-1.406 2.15-3.574 2.15-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.644-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.491-.085.745-.576.745z"></path></svg>
-                        Вконтакте
-                    </a>
-                </p>
+                <div class="footer-bottom-right">
+                    <p>Super Jump — сделано с ❤️</p>
+                    <p class="footer-dev-line">
+                        Разработчик —
+                        <a href="https://t.me/samadhi2411" target="_blank" rel="noopener" class="dev-tg-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 1 0 24 12.056A12.013 12.013 0 0 0 11.944 0Zm5.655 7.22c-.18 1.897-.962 6.502-1.36 8.627c-.168.9-.499 1.201-.82 1.23c-.696.064-1.225-.46-1.9-.902c-1.056-.693-1.653-1.124-2.678-1.8c-1.185-.78-.417-1.21.258-1.91c.177-.184 3.247-2.977 3.307-3.23c.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345c-.479.33-.913.49-1.302.48c-.428-.008-1.252-.241-1.865-.44c-.752-.244-1.349-.374-1.297-.789c.027-.216.325-.437.893-.663c3.498-1.524 5.83-2.529 6.998-3.014c3.332-1.386 4.025-1.627 4.476-1.635c.099-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472Z"></path></svg>
+                            samadhi2411
+                        </a>
+                        &nbsp;·&nbsp;
+                        <a href="https://max.ru/u/f9LHodD0cOKDY1emmUrupKlXJll32btrvJyZe3d0CeMmvy_rHDa2TWoayQc" target="_blank" rel="noopener" class="dev-max-link">MAX</a>
+                        &nbsp;·&nbsp;
+                        <a href="https://vk.com/samadhi2411" target="_blank" rel="noopener" class="dev-vk-link">
+                            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.391 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.864-.525-2.05-1.727-1.033-1-1.49-1.135-1.744-1.135-.356 0-.458.102-.458.593v1.575c0 .424-.135.678-1.253.678-1.846 0-3.896-1.118-5.335-3.202C4.624 10.857 4.03 8.57 4.03 8.096c0-.254.102-.491.593-.491h1.744c.44 0 .61.203.78.678.847 2.456 2.27 4.607 2.862 4.607.22 0 .322-.102.322-.66V10.33c-.068-1.186-.695-1.287-.695-1.71 0-.203.17-.407.44-.407h2.744c.373 0 .508.203.508.644v3.473c0 .372.17.508.271.508.22 0 .407-.136.813-.542 1.253-1.406 2.15-3.574 2.15-3.574.119-.254.322-.491.762-.491h1.744c.525 0 .644.27.525.644-.22 1.017-2.354 4.031-2.354 4.031-.186.305-.254.44 0 .78.186.254.796.779 1.203 1.253.745.847 1.32 1.558 1.473 2.05.17.491-.085.745-.576.745z"></path></svg>
+                            Вконтакте
+                        </a>
+                    </p>
+                </div>
             </div>
         </div>
     </footer>
